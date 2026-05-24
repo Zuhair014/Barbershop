@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Tambah Service</title>
+    <title>Tambah Barber</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,9 +12,9 @@
 
 <div class="container mt-5">
 
-    <h2>Tambah Layanan</h2>
+    <h2>Tambah Barber</h2>
 
-    <form action="/services"
+    <form action="/barbers"
         method="POST"
         enctype="multipart/form-data">
 
@@ -22,49 +22,40 @@
 
         <div class="mb-3">
 
-            <label>Nama Layanan</label>
+            <label>Nama Barber</label>
 
             <input type="text"
-                name="nama_layanan"
+                name="nama_barber"
                 class="form-control">
 
         </div>
 
         <div class="mb-3">
 
-            <label>Harga</label>
+            <label>Spesialis</label>
 
-            <input type="number"
-                name="harga"
+            <input type="text"
+                name="spesialis"
                 class="form-control">
 
         </div>
 
         <div class="mb-3">
 
-            <label>Durasi</label>
+            <label>Jadwal</label>
 
-            <input type="number"
-                name="durasi"
+            <input type="text"
+                name="jadwal"
                 class="form-control">
 
         </div>
 
         <div class="mb-3">
 
-            <label>Deskripsi</label>
-
-            <textarea name="deskripsi"
-                class="form-control"></textarea>
-
-        </div>
-
-        <div class="mb-3">
-
-            <label>Gambar</label>
+            <label>Foto</label>
 
             <input type="file"
-                name="gambar"
+                name="foto"
                 class="form-control">
 
         </div>

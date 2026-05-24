@@ -16,8 +16,11 @@
 
         <h2>Data Layanan</h2>
 
-        <a href="/services/create" class="btn btn-dark">
+        <a href="/services/create"
+            class="btn btn-dark">
+
             Tambah
+
         </a>
 
     </div>
@@ -25,7 +28,9 @@
     @if(session('success'))
 
         <div class="alert alert-success">
+
             {{ session('success') }}
+
         </div>
 
     @endif
@@ -33,11 +38,13 @@
     <table class="table table-bordered">
 
         <tr>
+
             <th>No</th>
+            <th>Gambar</th>
             <th>Nama</th>
             <th>Harga</th>
             <th>Durasi</th>
-            <th>Aksi</th>
+
         </tr>
 
         @foreach($services as $service)
@@ -46,34 +53,25 @@
 
             <td>{{ $loop->iteration }}</td>
 
-            <td>{{ $service->nama_layanan }}</td>
-
-            <td>Rp {{ number_format($service->harga) }}</td>
-
-            <td>{{ $service->durasi }} Menit</td>
-
             <td>
 
-                <a href="/services/{{ $service->id }}/edit"
-                    class="btn btn-warning btn-sm">
+                @if($service->gambar)
 
-                    Edit
+                    <img src="{{ asset('storage/'.$service->gambar) }}"
+                        width="100">
 
-                </a>
+                @endif
 
-                <form action="/services/{{ $service->id }}"
-                    method="POST"
-                    class="d-inline">
+            </td>
 
-                    @csrf
-                    @method('DELETE')
+            <td>{{ $service->nama_layanan }}</td>
 
-                    <button class="btn btn-danger btn-sm">
-                        Hapus
-                    </button>
+            <td>
+                Rp {{ number_format($service->harga) }}
+            </td>
 
-                </form>
-
+            <td>
+                {{ $service->durasi }} Menit
             </td>
 
         </tr>

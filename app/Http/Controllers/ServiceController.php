@@ -1,65 +1,52 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Service;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Service;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $services = Service::latest()->get();
+
+        return view('admin.services.index', compact('services'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.services.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nama_layanan' => 'required',
+            'harga' => 'required',
+            'durasi' => 'required',
+            'deskripsi' => 'required',
+            'gambar' => 'nullable|image'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Service $service)
-    {
-        //
-    }
+        $gambar = null;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
+        if($request->hasFile('gambar')){
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Service $service)
-    {
-        //
-    }
+            $gambar = $request->file('gambar')
+                ->store('services', 'public');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Service $service)
-    {
-        //
+        Service::create([
+            'nama_layanan' => $request->nama_layanan,
+            'harga' => $request->harga,
+            'durasi' => $request->durasi,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambar
+        ]);
+
+        return redirect('/services')
+            ->with('success', 'Data berhasil ditambah');
     }
 }

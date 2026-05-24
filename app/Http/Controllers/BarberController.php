@@ -2,64 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barber;
 use Illuminate\Http\Request;
+use App\Models\Barber;
 
 class BarberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $barbers = Barber::latest()->get();
+
+        return view('admin.barbers.index', compact('barbers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.barbers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_barber' => 'required',
+            'spesialis' => 'required',
+            'jadwal' => 'required',
+            'foto' => 'nullable|image'
+        ]);
+
+        $foto = null;
+
+        if($request->hasFile('foto')){
+
+            $foto = $request->file('foto')
+                ->store('barbers', 'public');
+        }
+
+        Barber::create([
+            'nama_barber' => $request->nama_barber,
+            'spesialis' => $request->spesialis,
+            'jadwal' => $request->jadwal,
+            'foto' => $foto
+        ]);
+
+        return redirect('/barbers')
+            ->with('success', 'Data barber berhasil ditambah');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Barber $barber)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Barber $barber)
     {
-        //
+        return view('admin.barbers.edit', compact('barber'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Barber $barber)
     {
-        //
+        $barber->update([
+            'nama_barber' => $request->nama_barber,
+            'spesialis' => $request->spesialis,
+            'jadwal' => $request->jadwal
+        ]);
+
+        return redirect('/barbers')
+            ->with('success', 'Data berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Barber $barber)
     {
-        //
+        $barber->delete();
+
+        return redirect('/barbers')
+            ->with('success', 'Data berhasil dihapus');
     }
 }
