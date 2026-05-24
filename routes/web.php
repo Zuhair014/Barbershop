@@ -13,8 +13,16 @@ Route::resource('services', App\Http\Controllers\Admin\ServiceController::class)
 
 Route::resource('barbers', BarberController::class);
 
-Route::get('/booking', [BookingController::class, 'create']);
+Route::middleware('auth')->group(function(){
 
-Route::post('/booking', [BookingController::class, 'store']);
+    Route::resource('booking', BookingController::class);
+
+});
 
 Route::get('/admin/bookings', [BookingController::class, 'index']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';

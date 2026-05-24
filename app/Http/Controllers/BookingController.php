@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Service;
 use App\Models\Barber;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -38,7 +39,7 @@ class BookingController extends Controller
         ]);
 
         Booking::create([
-            'user_id' => 1,
+            'user_id' => Auth::id(),
             'service_id' => $request->service_id,
             'barber_id' => $request->barber_id,
             'tanggal_booking' => $request->tanggal_booking,

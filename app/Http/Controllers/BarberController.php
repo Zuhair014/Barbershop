@@ -52,17 +52,33 @@ class BarberController extends Controller
         return view('admin.barbers.edit', compact('barber'));
     }
 
-    public function update(Request $request, Barber $barber)
-    {
-        $barber->update([
-            'nama_barber' => $request->nama_barber,
-            'spesialis' => $request->spesialis,
-            'jadwal' => $request->jadwal
-        ]);
+public function update(Request $request, Barber $barber)
+{
+    $request->validate([
+        'nama_barber' => 'required',
+        'spesialis' => 'required',
+        'jadwal' => 'required',
+    ]);
 
-        return redirect('/barbers')
-            ->with('success', 'Data berhasil diupdate');
+    $data = [
+        'nama_barber' => $request->nama_barber,
+        'spesialis' => $request->spesialis,
+        'jadwal' => $request->jadwal,
+    ];
+
+    if($request->hasFile('foto')){
+
+        $foto = $request->file('foto')
+            ->store('barbers', 'public');
+
+        $data['foto'] = $foto;
     }
+
+    $barber->update($data);
+
+    return redirect('/barbers')
+        ->with('success', 'Data barber berhasil diupdate');
+}
 
     public function destroy(Barber $barber)
     {
